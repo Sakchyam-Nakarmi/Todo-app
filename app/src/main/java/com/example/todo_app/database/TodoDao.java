@@ -1,4 +1,4 @@
-package com.example.todo_app;
+package com.example.todo_app.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -25,5 +25,5 @@ public interface TodoDao {
     void deleteAllTodo();
 
     @Query("SELECT * FROM todo") //add order by date later !!!
-    LiveData<List<Todo>> getAllTodo();
+    LiveData<List<Todo>> getAllTodos();
 }
