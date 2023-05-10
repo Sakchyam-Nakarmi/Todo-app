@@ -11,7 +11,6 @@ import java.util.List;
 
 @Dao
 public interface TodoDao {
-
     @Insert
     void addTodo(Todo todo);
 

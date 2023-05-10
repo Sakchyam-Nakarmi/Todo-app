@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.example.todo_app.database.Todo;
-import com.example.todo_app.database.TodoDao;
 import com.example.todo_app.database.TodoDatabase;
 
 import java.util.List;
