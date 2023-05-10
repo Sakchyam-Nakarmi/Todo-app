@@ -21,9 +21,9 @@ public interface TodoDao {
     @Delete
     void deleteTodo(Todo todo);
 
-    @Query("DELETE FROM todo")
+    @Query("delete from todos")
     void deleteAllTodo();
 
-    @Query("SELECT * FROM todo") //add order by date later !!!
+    @Query("SELECT * FROM todos") //add order by date later !!!
     LiveData<List<Todo>> getAllTodos();
 }

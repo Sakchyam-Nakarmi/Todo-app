@@ -1,23 +1,25 @@
 package com.example.todo_app.database;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "todo")
+@Entity(tableName = "todos")
 public class Todo {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     private String title;
     private String description;
-    private Date date_created;
 
-    public Todo(String title, String description, Date date_created) {
+
+
+    public Todo(String title, String description) {
         this.title = title;
         this.description = description;
-        this.date_created = date_created;
+
     }
 
     public int getId() {
@@ -44,11 +46,5 @@ public class Todo {
         this.description = description;
     }
 
-    public Date getDate_created() {
-        return date_created;
-    }
-
-    public void setDate_created(Date date_created) {
-        this.date_created = date_created;
-    }
+    
 }
