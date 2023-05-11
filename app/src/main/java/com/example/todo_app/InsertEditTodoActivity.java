@@ -8,16 +8,28 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class InsertTodoActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class InsertEditTodoActivity extends AppCompatActivity {
+    public static final String EXTRA_ID =
+            "com.example.todo_app.EXTRA_ID";
     public static final String EXTRA_TITLE =
             "com.example.todo_app.EXTRA_TITLE";
     public static final String EXTRA_DESC =
             "com.example.todo_app.EXTRA_DESC";
 
+    public static final String EXTRA_CREATED =
+            "com.example.todo_app.EXTRA_CREATED";
+
     private EditText editTitle,editDesc;
+    private TextView createdDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,14 +37,31 @@ public class InsertTodoActivity extends AppCompatActivity {
 
         editTitle = findViewById(R.id.editTitle);
         editDesc = findViewById(R.id.editDesc);
+        createdDate = findViewById(R.id.createdDate);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Insert Task");
+
+        Intent intent = getIntent();
+        if(intent.hasExtra(EXTRA_ID)){
+            setTitle("Update Task");
+            editTitle.setText(intent.getStringExtra(EXTRA_TITLE));
+            editDesc.setText(intent.getStringExtra(EXTRA_DESC));
+            Calendar calendar= Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            createdDate.setText("Updated at: "+dateFormat.format(calendar.getTime()));
+        }else {
+            setTitle("Insert Task");
+            Calendar calendar= Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            createdDate.setText("Created at: "+dateFormat.format(calendar.getTime()));
+        }
+
     }
 
     private void saveTodo(){
         String title = editTitle.getText().toString();
         String desc = editDesc.getText().toString();
+        String date = createdDate.getText().toString();
 
         if(title.trim().isEmpty() || desc.trim().isEmpty()){
             Toast.makeText(this, "Please enter new task", Toast.LENGTH_SHORT).show();
@@ -42,6 +71,12 @@ public class InsertTodoActivity extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra(EXTRA_TITLE,title);
         data.putExtra(EXTRA_DESC,desc);
+        data.putExtra(EXTRA_CREATED,date);
+
+        int id = getIntent().getIntExtra(EXTRA_ID,-1);
+        if(id != -1){
+            data.putExtra(EXTRA_ID,id);
+        }
 
         setResult(RESULT_OK,data);
         finish();

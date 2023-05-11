@@ -1,12 +1,16 @@
 package com.example.todo_app.database;
 
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
 
 @Entity(tableName = "todos")
 public class Todo {
@@ -17,11 +21,16 @@ public class Todo {
     private String description;
     private boolean completed;
 
+    private String created;
+
     public Todo(int id, String title, String description, boolean completed) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.completed = completed;
+        Calendar calendar= Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        created= dateFormat.format(calendar.getTime());
     }
 
     @Ignore
@@ -29,12 +38,21 @@ public class Todo {
         this.title = title;
         this.description = description;
         this.completed = completed;
+        Calendar calendar= Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        created= dateFormat.format(calendar.getTime());
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     @Ignore
     public Todo() {}
 
-
+    public String getCreated() {
+        return created;
+    }
 
     public boolean isCompleted() {
         return completed;
@@ -68,5 +86,9 @@ public class Todo {
         this.description = description;
     }
 
-    
+
 }
+
+
+
+

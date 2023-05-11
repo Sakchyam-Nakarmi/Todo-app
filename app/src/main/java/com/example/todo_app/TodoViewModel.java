@@ -32,7 +32,7 @@ public class TodoViewModel extends AndroidViewModel {
         repository.deleteTodo(todo);
     }
 
-    public void deleteAllTodos (Todo todo){
+    public void deleteAllTodos (){
         repository.deleteAllTodo();
     }
 

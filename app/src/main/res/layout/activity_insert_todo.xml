@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".InsertTodoActivity"
+    tools:context=".InsertEditTodoActivity"
     android:padding="16dp">
 
     <EditText
@@ -20,5 +20,9 @@
         android:layout_height="wrap_content"
         android:hint="Description"
         android:inputType="textMultiLine"/>
+    <TextView
+        android:id="@+id/createdDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
