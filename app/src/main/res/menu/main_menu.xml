@@ -5,4 +5,8 @@
         android:id="@+id/delete_all_task"
         android:title="Delete all tasks"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/sort_by_title"
+        android:title="Sort by title"
+        app:showAsAction="never"/>
 </menu>

@@ -42,19 +42,22 @@ public class InsertEditTodoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
 
         Intent intent = getIntent();
-        if(intent.hasExtra(EXTRA_ID)){
+        int mode = intent.getIntExtra("MODE",-1);
+        if(mode==2){
             setTitle("Update Task");
             editTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             editDesc.setText(intent.getStringExtra(EXTRA_DESC));
             Calendar calendar= Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             createdDate.setText("Updated at: "+dateFormat.format(calendar.getTime()));
-        }else {
+        }else if(mode ==1) {
             setTitle("Insert Task");
             Calendar calendar= Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             createdDate.setText("Created at: "+dateFormat.format(calendar.getTime()));
         }
+        else
+        {}
 
     }
 
@@ -73,9 +76,10 @@ public class InsertEditTodoActivity extends AppCompatActivity {
         data.putExtra(EXTRA_DESC,desc);
         data.putExtra(EXTRA_CREATED,date);
 
-        int id = getIntent().getIntExtra(EXTRA_ID,-1);
+        int id = getIntent().getIntExtra("MODE",-1);
+
         if(id != -1){
-            data.putExtra(EXTRA_ID,id);
+            data.putExtra("MODE",id);
         }
 
         setResult(RESULT_OK,data);

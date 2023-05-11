@@ -39,4 +39,10 @@ public class TodoViewModel extends AndroidViewModel {
     public LiveData<List<Todo>> getAllTodos(){
         return allTodos;
     }
+
+    public LiveData<List<Todo>> getAllTodosSorted() {
+        return repository.getAllTodosSorted();
+    }
+
+
 }

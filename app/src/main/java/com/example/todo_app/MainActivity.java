@@ -1,5 +1,9 @@
 package com.example.todo_app;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     public static final int EDIT_TODO_REQ=2;
     private TodoViewModel todoViewModel;
 
+    private TodoAdapter adapter;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,25 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         FloatingActionButton buttonInsertTodo = findViewById(R.id.button_add);
-        buttonInsertTodo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
-                //startActivity(intent,ADD_TODO_REQ);
-                startActivityForResult(intent,ADD_TODO_REQ);
-//                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
-//                    if(result.getResultCode() == Activity.RESULT_OK){
-//
-//                    }
-//                })
-            }
-        });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        TodoAdapter adapter = new TodoAdapter();
+        adapter = new TodoAdapter();
         recyclerView.setAdapter(adapter);
 
         todoViewModel = new ViewModelProvider(this).get(TodoViewModel.class);
@@ -155,49 +151,61 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attachToRecyclerView(recyclerView);
 
-        adapter.setOnItemClickListener(new TodoAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Todo todo) {
-                Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
-                intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getId());
-                intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getCreated());
-                intent.putExtra(InsertEditTodoActivity.EXTRA_TITLE,todo.getTitle());
-                intent.putExtra(InsertEditTodoActivity.EXTRA_DESC,todo.getDescription());
-                startActivityForResult(intent,EDIT_TODO_REQ);
+        adapter.setOnItemClickListener(todo -> {
+            Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
+            intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getId());
+            intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getCreated());
+            intent.putExtra(InsertEditTodoActivity.EXTRA_TITLE,todo.getTitle());
+            intent.putExtra(InsertEditTodoActivity.EXTRA_DESC,todo.getDescription());
+            intent.putExtra("MODE", EDIT_TODO_REQ);
+            activityResultLauncher.launch(intent);
+
+        });
+
+        buttonInsertTodo.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
+            intent.putExtra("MODE",ADD_TODO_REQ);
+            activityResultLauncher.launch(intent);
+        });
+
+        activityResultLauncher= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode()==RESULT_OK)
+            {
+                if(result.getData().getIntExtra("MODE",-1)==2)
+                {
+                    int id = result.getData().getIntExtra("MODE",-1);
+
+                    if (id == -1) {
+                        Toast.makeText(this, "Task cannot be updated", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String title = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_TITLE);
+                    String desc = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
+
+
+                    Todo todo = new Todo(title,desc,false);
+                    todo.setId(id);
+                    todoViewModel.update(todo);
+
+                } else if (result.getData().getIntExtra("MODE",-1)==1) {
+
+                    String title = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_TITLE);
+                    String desc = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
+
+                    Todo todo = new Todo(title,desc,false);
+                    todoViewModel.insert(todo);
+
+                    Toast.makeText(this, "Todo saved", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(this, "Todo not saved", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ADD_TODO_REQ && resultCode == RESULT_OK){
-            String title = data.getStringExtra(InsertEditTodoActivity.EXTRA_TITLE);
-            String desc = data.getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
-
-            Todo todo = new Todo(title,desc,false);
-            todoViewModel.insert(todo);
-
-            Toast.makeText(this, "Todo saved", Toast.LENGTH_SHORT).show();
-        }
-        else if(requestCode == EDIT_TODO_REQ && resultCode == RESULT_OK){
-            int id = data.getIntExtra(InsertEditTodoActivity.EXTRA_ID,-1);
-
-            if (id == -1) {
-                Toast.makeText(this, "Task cannot be updated", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String title = data.getStringExtra(InsertEditTodoActivity.EXTRA_TITLE);
-            String desc = data.getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
-
-            Todo todo = new Todo(title,desc,false);
-            todo.setId(id);
-            todoViewModel.update(todo);
-        }
-        else {
-            Toast.makeText(this, "Todo not saved", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,9 +221,18 @@ public class MainActivity extends AppCompatActivity {
                 todoViewModel.deleteAllTodos();
                 Toast.makeText(this, "All tasks deleted", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.sort_by_title:
+                todoViewModel.getAllTodosSorted().observe(this, new Observer<List<Todo>>() {
+                    @Override
+                    public void onChanged(List<Todo> todos) {
+                        adapter.setTodos(todos);
+                    }
+                });
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
+
 }

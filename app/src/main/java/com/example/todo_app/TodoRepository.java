@@ -58,4 +58,9 @@ public class TodoRepository {
         return todoList;
     }
 
+    public LiveData<List<Todo>> getAllTodosSorted() {
+        return database.todoDao().getAllTodosSorted();
+    }
+
+
 }
