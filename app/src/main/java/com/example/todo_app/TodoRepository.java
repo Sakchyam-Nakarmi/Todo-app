@@ -14,44 +14,48 @@ public class TodoRepository {
     private LiveData<List<Todo>> todoList;
 
     public TodoRepository(Application application){
-        database = TodoDatabase.getDatabase(application);
+        database = TodoDatabase.getInstance(application);
         todoList = database.todoDao().getAllTodos();
     }
 
     public void addTodo(Todo todo){
-        database.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.todoDao().addTodo(todo);
-            }
-        });
+//        database.databaseWriteExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+        database.todoDao().addTodo(todo);
     }
 
     public void updateTodo(Todo todo){
-        database.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.todoDao().updateTodo(todo);
-            }
-        });
+//        database.databaseWriteExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+        database.todoDao().updateTodo(todo);
     }
 
     public void deleteTodo(Todo todo){
-        database.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.todoDao().deleteTodo(todo);
-            }
-        });
+//        database.databaseWriteExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+        database.todoDao().deleteTodo(todo);
     }
 
     public void deleteAllTodo(){
-        database.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                database.todoDao().deleteAllTodo();
-            }
-        });
+//        database.databaseWriteExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+        database.todoDao().deleteAllTodo();
     }
 
     public LiveData<List<Todo>> getAllTodos(){

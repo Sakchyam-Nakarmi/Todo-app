@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TodoAdapter adapter;
 
-    private ActivityResultLauncher<Intent> activityResultLauncher;
+    public static ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,9 +182,9 @@ public class MainActivity extends AppCompatActivity {
                     String desc = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
 
 
-                    Todo todo = new Todo(title,desc,false);
-                    todo.setId(id);
+                    Todo todo = new Todo(id,title,desc,false);
                     todoViewModel.update(todo);
+                    Toast.makeText(this, "Task updated", Toast.LENGTH_SHORT).show();
 
                 } else if (result.getData().getIntExtra("MODE",-1)==1) {
 
@@ -194,8 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Todo todo = new Todo(title,desc,false);
                     todoViewModel.insert(todo);
-
-                    Toast.makeText(this, "Todo saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Task Added!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
@@ -204,7 +202,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
+
 
 
     @Override
@@ -229,10 +230,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 return true;
+            case R.id.about:
+                Intent gotoAboutIntent = new Intent(MainActivity.this,AboutActivity.class);
+                startActivity(gotoAboutIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
-
 }

@@ -77,7 +77,6 @@ public class InsertEditTodoActivity extends AppCompatActivity {
         data.putExtra(EXTRA_CREATED,date);
 
         int id = getIntent().getIntExtra("MODE",-1);
-
         if(id != -1){
             data.putExtra("MODE",id);
         }

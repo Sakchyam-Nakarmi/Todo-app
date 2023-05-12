@@ -19,22 +19,17 @@ public abstract class TodoDatabase extends RoomDatabase {
 
     public abstract TodoDao todoDao();
 
-    private static volatile TodoDatabase INSTANCE;
-    private static final int NUMBER_OF_THREADS = 4;
-    public static final ExecutorService databaseWriteExecutor =
-            Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-
-    public static TodoDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
-            synchronized (TodoDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    TodoDatabase.class, "todo_database")
-                            .build();
-                }
-            }
+    public static synchronized TodoDatabase getInstance(Context context)
+    {
+        if(instance == null)
+        {
+            instance = Room.databaseBuilder(context.getApplicationContext(),
+                            TodoDatabase.class, "todo_database")
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration().build();
         }
-        return INSTANCE;
+
+        return instance;
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.todo_app;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -18,6 +19,7 @@ public class TodoViewModel extends AndroidViewModel {
         super(application);
         repository = new TodoRepository(application);
         allTodos = repository.getAllTodos();
+
     }
 
     public void insert (Todo todo){

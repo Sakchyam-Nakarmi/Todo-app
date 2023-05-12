@@ -86,7 +86,16 @@ public class Todo {
         this.description = description;
     }
 
-
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", completed=" + completed +
+                ", created='" + created + '\'' +
+                '}';
+    }
 }
 
 

@@ -12,9 +12,12 @@
         android:theme="@style/Theme.Todoapp"
         tools:targetApi="31">
         <activity
-            android:name=".InsertEditTodoActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".AboutActivity"
             android:exported="false" />
+        <activity
+            android:name=".InsertEditTodoActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
