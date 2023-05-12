@@ -66,5 +66,8 @@ public class TodoRepository {
         return database.todoDao().getAllTodosSorted();
     }
 
+    public LiveData<List<Todo>> getUncheckedTodos() {
+        return database.todoDao().getUncheckedTodos();
+    }
 
 }

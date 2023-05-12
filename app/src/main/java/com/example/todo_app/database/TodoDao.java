@@ -28,4 +28,7 @@ public interface TodoDao {
 
     @Query("SELECT * FROM todos ORDER BY title ASC")
     LiveData<List<Todo>> getAllTodosSorted();
+
+    @Query("SELECT * FROM todos WHERE completed = 0")
+    LiveData<List<Todo>> getUncheckedTodos();
 }

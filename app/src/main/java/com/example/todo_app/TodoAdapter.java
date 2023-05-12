@@ -1,9 +1,12 @@
 package com.example.todo_app;
 
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +34,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
         Todo currentTodo = todos.get(position);
         holder.title.setText(currentTodo.getTitle());
         holder.description.setText(currentTodo.getDescription());
-        holder.completed.isChecked();
+        holder.created.setText("Created "+currentTodo.getCreated());
+        holder.setData(currentTodo);
 
     }
 
@@ -51,14 +55,24 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
     }
 
     class TodoHolder extends RecyclerView.ViewHolder {
-        private TextView title, description;
+        private TextView title, description,created;
         private CheckBox completed;
 
+        private Todo todo;
         public TodoHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             description = itemView.findViewById(R.id.description);
             completed = itemView.findViewById(R.id.completed);
+            created = itemView.findViewById(R.id.created);
+
+            completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    Todo todo1 = new Todo(todo.getId(),todo.getTitle(), todo.getDescription(),isChecked);
+                    MainActivity.todoViewModel.update(todo1);
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,6 +85,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
                 }
             });
         }
+
+        public void setData(Todo currentTodo) {
+            this.todo = currentTodo;
+            completed.setChecked(todo.isCompleted());
+        }
     }
 
     public interface OnItemClickListener {
@@ -82,3 +101,4 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder> {
 
     }
 }
+

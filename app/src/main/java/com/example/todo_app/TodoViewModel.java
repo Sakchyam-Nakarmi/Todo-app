@@ -46,5 +46,9 @@ public class TodoViewModel extends AndroidViewModel {
         return repository.getAllTodosSorted();
     }
 
+    public LiveData<List<Todo>> getUncheckedTodos() {
+        return repository.getUncheckedTodos();
+    }
+
 
 }

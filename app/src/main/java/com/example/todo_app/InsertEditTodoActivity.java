@@ -24,11 +24,17 @@ public class InsertEditTodoActivity extends AppCompatActivity {
     public static final String EXTRA_DESC =
             "com.example.todo_app.EXTRA_DESC";
 
+    public static final String EXTRA_COMP =
+            "com.example.todo_app.EXTRA_COMP";
     public static final String EXTRA_CREATED =
             "com.example.todo_app.EXTRA_CREATED";
 
+    private boolean completed;
     private EditText editTitle,editDesc;
     private TextView createdDate;
+
+
+    private int dbId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +51,13 @@ public class InsertEditTodoActivity extends AppCompatActivity {
         int mode = intent.getIntExtra("MODE",-1);
         if(mode==2){
             setTitle("Update Task");
+            completed = intent.getBooleanExtra(EXTRA_COMP,false);
             editTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             editDesc.setText(intent.getStringExtra(EXTRA_DESC));
             Calendar calendar= Calendar.getInstance();
             SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             createdDate.setText("Updated at: "+dateFormat.format(calendar.getTime()));
+            dbId = intent.getIntExtra(EXTRA_ID,-2);
         }else if(mode ==1) {
             setTitle("Insert Task");
             Calendar calendar= Calendar.getInstance();
@@ -72,6 +80,8 @@ public class InsertEditTodoActivity extends AppCompatActivity {
         }
 
         Intent data = new Intent();
+        data.putExtra("ID",dbId);
+        data.putExtra("Comp",completed);
         data.putExtra(EXTRA_TITLE,title);
         data.putExtra(EXTRA_DESC,desc);
         data.putExtra(EXTRA_CREATED,date);

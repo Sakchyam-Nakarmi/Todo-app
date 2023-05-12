@@ -1,11 +1,8 @@
 package com.example.todo_app;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
@@ -18,11 +15,11 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.example.todo_app.database.Todo;
@@ -34,7 +31,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final int ADD_TODO_REQ=1;
     public static final int EDIT_TODO_REQ=2;
-    private TodoViewModel todoViewModel;
+    public static TodoViewModel todoViewModel;
 
     private TodoAdapter adapter;
 
@@ -153,13 +150,28 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(todo -> {
             Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
             intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getId());
-            intent.putExtra(InsertEditTodoActivity.EXTRA_ID,todo.getCreated());
+            intent.putExtra(InsertEditTodoActivity.EXTRA_CREATED,todo.getCreated());
             intent.putExtra(InsertEditTodoActivity.EXTRA_TITLE,todo.getTitle());
             intent.putExtra(InsertEditTodoActivity.EXTRA_DESC,todo.getDescription());
             intent.putExtra("MODE", EDIT_TODO_REQ);
             activityResultLauncher.launch(intent);
 
         });
+
+        adapter.setOnItemClickListener(new TodoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Todo todo) {
+                Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
+                intent.putExtra(InsertEditTodoActivity.EXTRA_ID, todo.getId());
+                intent.putExtra(InsertEditTodoActivity.EXTRA_CREATED, todo.getCreated());
+                intent.putExtra(InsertEditTodoActivity.EXTRA_TITLE, todo.getTitle());
+                intent.putExtra(InsertEditTodoActivity.EXTRA_DESC, todo.getDescription());
+                intent.putExtra(InsertEditTodoActivity.EXTRA_COMP,todo.isCompleted());
+                intent.putExtra("MODE", EDIT_TODO_REQ);
+                activityResultLauncher.launch(intent);
+            }
+        });
+
 
         buttonInsertTodo.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, InsertEditTodoActivity.class);
@@ -172,17 +184,18 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(result.getData().getIntExtra("MODE",-1)==2)
                 {
-                    int id = result.getData().getIntExtra("MODE",-1);
+                    int id1 = result.getData().getIntExtra("MODE",-1);
 
-                    if (id == -1) {
+                    if (id1 == -1) {
                         Toast.makeText(this, "Task cannot be updated", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     String title = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_TITLE);
                     String desc = result.getData().getStringExtra(InsertEditTodoActivity.EXTRA_DESC);
+                    int id = result.getData().getIntExtra("ID",-2);
+                    boolean checked = result.getData().getBooleanExtra("Comp",false);
 
-
-                    Todo todo = new Todo(id,title,desc,false);
+                    Todo todo = new Todo(id,title,desc,checked);
                     todoViewModel.update(todo);
                     Toast.makeText(this, "Task updated", Toast.LENGTH_SHORT).show();
 
@@ -224,6 +237,22 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.sort_by_title:
                 todoViewModel.getAllTodosSorted().observe(this, new Observer<List<Todo>>() {
+                    @Override
+                    public void onChanged(List<Todo> todos) {
+                        adapter.setTodos(todos);
+                    }
+                });
+                return true;
+            case R.id.hide_completed:
+                todoViewModel.getUncheckedTodos().observe(this, new Observer<List<Todo>>() {
+                    @Override
+                    public void onChanged(List<Todo> todos) {
+                        adapter.setTodos(todos);
+                    }
+                });
+                return true;
+            case R.id.show_all:
+                todoViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
                     @Override
                     public void onChanged(List<Todo> todos) {
                         adapter.setTodos(todos);
