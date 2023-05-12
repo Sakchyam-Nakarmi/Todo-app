@@ -82,12 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                todoViewModel.delete(adapter.getTodoAt(viewHolder.getAdapterPosition()));
-//                Toast.makeText(MainActivity.this, "Task deleted!", Toast.LENGTH_SHORT).show();
                 int position = viewHolder.getAdapterPosition();
                 deletedTodo = adapter.getTodoAt(position);
                 todoViewModel.delete(deletedTodo);
-                Toast.makeText(MainActivity.this, "Task deleted!", Toast.LENGTH_SHORT).show();
 
 
                 // Show Snackbar with undo option
@@ -234,6 +231,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.delete_all_task:
                 todoViewModel.deleteAllTodos();
                 Toast.makeText(this, "All tasks deleted", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.delete_done_task:_task:
+                todoViewModel.deleteDoneTodos();
+                Toast.makeText(this, "All Completed tasks deleted", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.sort_by_title:
                 todoViewModel.getAllTodosSorted().observe(this, new Observer<List<Todo>>() {

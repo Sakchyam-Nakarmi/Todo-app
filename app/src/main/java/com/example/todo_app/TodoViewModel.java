@@ -38,6 +38,10 @@ public class TodoViewModel extends AndroidViewModel {
         repository.deleteAllTodo();
     }
 
+    public void deleteDoneTodos (){
+        repository.deleteDoneTodos();
+    }
+
     public LiveData<List<Todo>> getAllTodos(){
         return allTodos;
     }

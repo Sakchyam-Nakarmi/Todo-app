@@ -31,4 +31,7 @@ public interface TodoDao {
 
     @Query("SELECT * FROM todos WHERE completed = 0")
     LiveData<List<Todo>> getUncheckedTodos();
+
+    @Query("DELETE FROM todos WHERE completed = 1")
+    void deleteDoneTodos();
 }

@@ -6,6 +6,10 @@
         android:title="Delete all tasks"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/delete_done_task"
+        android:title="Delete done tasks"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/sort_by_title"
         android:title="Sort by title"
         app:showAsAction="never"/>

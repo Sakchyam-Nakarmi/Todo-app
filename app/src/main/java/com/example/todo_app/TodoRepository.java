@@ -19,43 +19,24 @@ public class TodoRepository {
     }
 
     public void addTodo(Todo todo){
-//        database.databaseWriteExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
         database.todoDao().addTodo(todo);
     }
 
     public void updateTodo(Todo todo){
-//        database.databaseWriteExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
+
         database.todoDao().updateTodo(todo);
     }
 
     public void deleteTodo(Todo todo){
-//        database.databaseWriteExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
         database.todoDao().deleteTodo(todo);
     }
 
     public void deleteAllTodo(){
-//        database.databaseWriteExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
         database.todoDao().deleteAllTodo();
+    }
+
+    public void deleteDoneTodos(){
+        database.todoDao().deleteDoneTodos();
     }
 
     public LiveData<List<Todo>> getAllTodos(){
@@ -69,5 +50,6 @@ public class TodoRepository {
     public LiveData<List<Todo>> getUncheckedTodos() {
         return database.todoDao().getUncheckedTodos();
     }
+
 
 }
