@@ -27,7 +27,10 @@
         android:layout_width="330dp"
         android:layout_height="138dp"
         android:layout_marginTop="20dp"
-        android:text="asdasd"
+        android:text="A Simple Todo app with title , short description and created date with completed check box.
+All CRUD functions working using mvvm pattern. Plus additional sort, delete completed/all,
+show all,hide completed features are also available.
+This about activity is fragment class. "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +40,7 @@
         android:id="@+id/btn"
         android:layout_width="260dp"
         android:layout_height="60dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="232dp"
         android:text="previous page"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.321"
