@@ -29,7 +29,7 @@ public class Todo {
         this.description = description;
         this.completed = completed;
         Calendar calendar= Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
         created= dateFormat.format(calendar.getTime());
     }
 
@@ -39,7 +39,7 @@ public class Todo {
         this.description = description;
         this.completed = completed;
         Calendar calendar= Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
         created= dateFormat.format(calendar.getTime());
     }
 

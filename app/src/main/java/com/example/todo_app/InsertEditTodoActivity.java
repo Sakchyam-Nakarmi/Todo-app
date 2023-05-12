@@ -55,13 +55,13 @@ public class InsertEditTodoActivity extends AppCompatActivity {
             editTitle.setText(intent.getStringExtra(EXTRA_TITLE));
             editDesc.setText(intent.getStringExtra(EXTRA_DESC));
             Calendar calendar= Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
             createdDate.setText("Updated at: "+dateFormat.format(calendar.getTime()));
             dbId = intent.getIntExtra(EXTRA_ID,-2);
         }else if(mode ==1) {
             setTitle("Insert Task");
             Calendar calendar= Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm aaa");
             createdDate.setText("Created at: "+dateFormat.format(calendar.getTime()));
         }
         else
