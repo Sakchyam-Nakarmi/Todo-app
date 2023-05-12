@@ -1,4 +1,4 @@
-TODO APP
+TODO APP<br />
 ->The view after opening the todo app with already existing data.<br />
 Fig. 1<br /><br />
 
@@ -27,11 +27,49 @@ Fig. 4<br /><br />
 
 
 ------DELETE ONE TASK------<br />
-->Deleting a particular task , you can swipe the task from left to right or vice versa.You can undo the delete action by pressing the undo button and restore the task.
+->Deleting a particular task , you can swipe the task from left to right or vice versa.You can undo the delete action by pressing the undo button and restore the task.<br />
 Fig. 5<br /><br />
 ![](gifs/DeleteOneTask.gif)<br /><br /><br />
 
 
 
-------SORT TASK BY TITLE------<br />
+------SORT TASKS BY TITLE------<br />
+->To sort task aplhabetically according to its title an option in the menu is available which sorts the task in ascending order accoring to the title.<br />
+Fig. 6<br /><br />
+![](gifs/SortBytTitle.gif)<br /><br /><br />
 
+
+------HIDE COMPLETED TASKS------<br />
+->The task which are checked/completed can be hidden. The menu item is available which allows us to hide completed task/s.<br />
+Fig. 7<br /><br />
+![](gifs/HideCompleted.gif)<br /><br /><br />
+
+------SHOW ALL TASKS------<br />
+->The task which are checked/completed which had been hidden can again be displayed. The menu item is available which allows us to show all tasks again.<br />
+Fig. 8<br /><br />
+![](gifs/ShowAll.gif)<br /><br /><br />
+
+------DELETE COMPLETED TASK------<br />
+->The task which are checked/completed can be delete. The menu item is available which allows us to delete completed task/s.<br />
+Fig. 9<br /><br />
+![](gifs/DeleteCompletedTasks.gif)<br /><br /><br />
+
+------ABOUT FRAGMENT------<br />
+->The about app fragment is available which gives a brief on the app. The menu item is available which allows us to go to the about fragment and we can return to main activity again using the previous button.<br />
+Fig. 10<br /><br />
+![](gifs/AboutFragment.gif)<br /><br /><br />
+
+------ROTATING APP------<br />
+->The app works as normally even when the screen is rotated.All functions work perfectly<br />
+Fig. 11<br /><br />
+![](gifs/RotateWorking.gif)<br /><br /><br />
+
+------DATA STORED------<br />
+->The app stores the data even when we exit from the app, we can get the stored data on opeing the app again.<br />
+Fig. 12<br /><br />
+![](gifs/DataStoredAfterClosingApp.gif)<br /><br /><br />
+
+------DELETE ALL TASK------<br />
+->All the tasks can be deleted at once. The menu item is available which allows us to delete all tasks.<br />
+Fig. 13<br /><br />
+![](gifs/DeleteAllTasks.gif)<br /><br /><br />
